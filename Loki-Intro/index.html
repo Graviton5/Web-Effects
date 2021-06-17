@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Loki Styled Effect</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+
+	<div class='container'>
+		<p id='text'></p>
+	</div>
+	<script type="text/javascript">
+		let leftStart = 0;
+		// const text = prompt("Put Sample Text to show here!");
+		const text = "Sample Text";
+		let iterator = text[Symbol.iterator]();
+		let theChar = iterator.next();
+		let i = 1;
+		const fonts = ["HennyPenny", "AquireBold", "NightmarePills", "Quikhand", "ParkLaneNF", "Fira Mono", "Freakshow", "Arnoia Display", "3M Trislan", "Sakuwek-BlackShadow", "CocoBiker Regular Trial", "Borracho", "theyrecomingtotakemeaway", "unbalanced"];
+		let temp = 0;
+
+		if((100 - text.length*6)/2 > 0 ){
+			leftStart = (100 - text.length*6)/2;
+		}
+
+		while(!theChar.done) {
+		  	const para = document.createElement("span");
+
+		  	para.id = "char" + i;
+			const node = document.createTextNode(theChar.value);
+			para.appendChild(node);
+			para.setAttribute('text', theChar.value);
+
+			para.style.fontFamily = fonts[Math.floor(Math.random()*fonts.length)];
+			para.style.left = leftStart + i*6 +'vw';
+			const element = document.getElementById("text");
+			element.appendChild(para);
+
+			theChar = iterator.next();
+			i++;
+		}
+		setInterval(function(){ 
+			let characterPrev, characterNext;
+			let idx = Math.floor(Math.random()*(text.length))+1;
+			while(1){
+				if(idx == temp){
+					idx = Math.floor(Math.random()*(text.length-1))+1;
+					continue;
+				}
+				break;
+			}
+			let character = document.getElementById("char"+ idx);
+			if(idx > 1){
+				characterPrev = document.getElementById("char"+ (idx-1));				
+			}
+
+			if(idx < (text.length)){
+				characterNext = document.getElementById("char"+ (idx+1));
+			}
+
+			let fontidx = Math.floor(Math.random()*fonts.length);
+			character.style.fontFamily = fonts[fontidx];
+			while(1){
+
+				if(typeof characterPrev !== 'undefined' && getComputedStyle(characterPrev).getPropertyValue("font-family") === fonts[fontidx]){
+					fontidx = Math.floor(Math.random()*fonts.length);
+					character.style.fontFamily = fonts[fontidx];
+					continue;
+				}else if( typeof characterNext !== 'undefined' && getComputedStyle(characterNext).getPropertyValue("font-family") === fonts[fontidx]){
+					fontidx = Math.floor(Math.random()*fonts.length);
+					character.style.fontFamily = fonts[fontidx];
+					continue;
+				}
+				break;
+			}
+			temp = idx;
+			
+		 }, 300);
+	</script>
+</body>
+</html>
